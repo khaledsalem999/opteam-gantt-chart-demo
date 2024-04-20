@@ -1,0 +1,16 @@
+.margin-left-sm{
+    margin-left: 20px;
+}
+
+.margin-right-sm{
+    margin-right: 20px;
+}
+
+.header-container{
+    background-color: white;
+}
+
+img {
+    width: 150px;
+    height: auto;
+}

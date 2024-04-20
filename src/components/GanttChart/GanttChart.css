@@ -1,0 +1,19 @@
+.task-summary {
+    position: fixed;
+    top: 200px;
+    right: 50px;
+    width: 450px; 
+    padding: 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.add-report-button {
+    background-color: "#21b6ae";
+    font-size: large;
+}
+
+.gantt-header {
+  background-color: white;
+}

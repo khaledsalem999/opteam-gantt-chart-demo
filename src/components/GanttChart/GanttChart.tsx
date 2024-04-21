@@ -1,32 +1,22 @@
-import {useState, useEffect, useRef} from 'react'
-import { Gantt, Task, EventOption, StylingOption, ViewMode, DisplayOption } from 'gantt-task-react';
+import { useState, useEffect, useRef} from 'react'
+import { Gantt, Task} from 'gantt-task-react';
 import Tasks from '../../data/Tasks';
 import GanttTaskSummary from './GanttTaskSummary';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import Button from '@mui/material/Button';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import './GanttChart.css'
-import { deepOrange } from '@mui/material/colors';
+import GanttHeader from './GanttHeader';
 
-const addReportButtonStyle = {
-  backgroundColor: "#FF5722",
-  textTransform: 'none',
-  boxShadow: 'none'
-}
+const progressCompletionColor = "#7CFC00";
+const progressSelectedCompletetionColor = "#228B22";
 
-const exportAndDateButtonStyles = {
-  backgroundColor: "#F6F7FD",
-  textTransform: 'none',
-  boxShadow: 'none'
-}
+const inProgressColor = "#A3A3FF";
+const inProgressSelectColor = "#8282F5";
 
 function GanttChart() {
 
   const [tasks, setTasks] = useState<Task[]>(Tasks);
   const [showSummaryComponent, setShowSummaryComponent] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task>(Object);
-  const [isChecked, setIsChecked] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isChecked] = useState(true);
   const componentRef = useRef<HTMLDivElement>(null);
   let columnWidth = 65;
 
@@ -48,7 +38,7 @@ function GanttChart() {
     const projectTasks = tasks.filter(t => t.project === projectId);
     let start = projectTasks[0].start;
     let end = projectTasks[0].end;
-  
+
     for (let i = 0; i < projectTasks.length; i++) {
       const task = projectTasks[i];
       if (start.getTime() > task.start.getTime()) {
@@ -62,7 +52,6 @@ function GanttChart() {
   }
 
   const handleTaskChange = (task: Task) => {
-    console.log("On date change Id:" + task.id);
     let newTasks = tasks.map(t => (t.id === task.id ? task : t));
     if (task.project) {
       const [start, end] = getStartEndDateForProject(newTasks, task.project);
@@ -90,88 +79,48 @@ function GanttChart() {
   };
 
   const handleProgressChange = async (task: Task) => {
-    if(task.progress === 100){
+    if (task.progress === 100) {
       task.styles = {
-        progressColor: "#7CFC00",
-        progressSelectedColor: "#228B22"
+        progressColor: progressCompletionColor,
+        progressSelectedColor: progressSelectedCompletetionColor
       }
-    }else {
+    } else {
       task.styles = {
-        progressColor: "#A3A3FF",
-        progressSelectedColor: "#8282F5"
+        progressColor: inProgressColor,
+        progressSelectedColor: inProgressSelectColor
       }
     }
     setTasks(tasks.map(t => (t.id === task.id ? task : t)));
     setSelectedTask(task);
-    console.log("On progress change Id:" + task.id);
   };
 
   const handleDblClick = (task: Task) => {
-    
+    //do logic if needed
   };
 
   const handleClick = (task: Task) => {
-    if(task.id === selectedTask.id && showSummaryComponent){
+    if (task.id === selectedTask.id && showSummaryComponent) {
       setShowSummaryComponent(false);
-    }else if(task.id === selectedTask.id && !showSummaryComponent){
+    } else if (task.id === selectedTask.id && !showSummaryComponent) {
       setShowSummaryComponent(true);
-    }else if(task.id !== selectedTask.id && !showSummaryComponent){
+    } else if (task.id !== selectedTask.id && !showSummaryComponent) {
       setShowSummaryComponent(true);
     }
     setSelectedTask(task);
   };
 
   const handleSelect = (task: Task, isSelected: boolean) => {
-    console.log(task.name + " has " + (isSelected ? "selected" : "unselected"));
+    //do logic if needed
   };
 
   const handleExpanderClick = (task: Task) => {
     setTasks(tasks.map(t => (t.id === task.id ? task : t)));
-    console.log("On expander click Id:" + task.id);
   };
 
 
   return (
     <div className='wrapper border' ref={componentRef}>
-      <div className='d-flex p-3 justify-content-between gantt-header'>
-        <div className='d-flex'>
-        <Button variant="contained" size="small" style={{
-            backgroundColor: "#F6F7FD",
-            textTransform: 'none',
-            boxShadow: 'none',
-            color: 'black',
-            marginRight: 20
-          }}>
-            <span className='fw-bold'>Today</span>
-          </Button>
-          <Button variant="contained" size="small" style={{
-            backgroundColor: "#F6F7FD",
-            textTransform: 'none',
-            boxShadow: 'none',
-            color: 'black'
-          }}>
-            <CalendarTodayIcon fontSize="small"/>
-            <span className='fw-bold'>Month/Day</span>
-          </Button>
-        </div>
-        <div className='my-auto'>
-          <Button variant="contained" size="small" style={{
-            backgroundColor: "#F6F7FD",
-            textTransform: 'none',
-            boxShadow: 'none',
-            color: 'black',
-            marginRight: 20
-          }}>
-            <span className='fw-bold'>Export</span>
-            <KeyboardArrowDownIcon/>
-          </Button>
-          <Button variant="contained" size="small" className='margin-left-sm fw-bold' style={{
-            backgroundColor: "#FF5722",
-            textTransform: 'none',
-            boxShadow: 'none'
-          }}>Add Report</Button>
-        </div>
-      </div>
+      <GanttHeader/>
       <Gantt
         tasks={tasks}
         onDateChange={handleTaskChange}
@@ -185,10 +134,10 @@ function GanttChart() {
         columnWidth={columnWidth}
       />
 
-      {showSummaryComponent && 
-      <div className='task-summary'>
-        <GanttTaskSummary task={selectedTask}/>
-      </div>
+      {showSummaryComponent &&
+        <div className='task-summary'>
+          <GanttTaskSummary task={selectedTask} />
+        </div>
       }
     </div>
   )

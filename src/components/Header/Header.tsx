@@ -1,4 +1,4 @@
-import {useState, SyntheticEvent} from 'react'
+import { useState, SyntheticEvent } from 'react'
 import opteamLogo from '../../Assets/opteamlogo.png'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -20,7 +20,7 @@ function Header() {
     <div className='d-flex justify-content-between header-container px-4'>
       <div className='d-flex'>
         <div className='my-auto'>
-          <img src={opteamLogo} />
+          <img alt='logo' src={opteamLogo} />
         </div>
         <div className='margin-left-sm'>
           <Tabs
@@ -38,7 +38,7 @@ function Header() {
                 fontWeight: 'bold',
                 "&.Mui-selected": {
                   color: deepOrange[500]
-              }
+                }
               }
             }}
             aria-label="secondary tabs example"
@@ -51,13 +51,13 @@ function Header() {
       </div>
       <div className='d-flex'>
         <div className='my-auto'>
-          <NotificationsNoneIcon/>
+          <NotificationsNoneIcon />
         </div>
         <div className='my-auto mx-3'>
           <Avatar sx={{ bgcolor: deepOrange[500], width: 28, height: 28 }}></Avatar>
         </div>
         <div className='my-auto d-block'>
-          <KeyboardArrowDownIcon/>
+          <KeyboardArrowDownIcon />
         </div>
       </div>
     </div>
